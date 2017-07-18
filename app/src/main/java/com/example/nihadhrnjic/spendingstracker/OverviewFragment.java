@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -108,13 +109,24 @@ public class OverviewFragment extends Fragment {
     }
 
     private void setSpendingGoal(){
-        mSpendingGoal.setText("Goal for "+new DateTime().toString("MMMM")+": "+mOverview.getTargetMonthGoal() + " KM");
+        double goal = mOverview.getTargetMonthGoal();
+        if(goal <= 0){
+            mSpendingGoal.setText("Goal not set for "+new DateTime().toString("MMMM"));
+        }else{
+            mSpendingGoal.setText("Goal for "+new DateTime().toString("MMMM")+": "+mOverview.getTargetMonthGoal() + " KM");
+        }
     }
 
     private void setCanSpend(){
-        mCanSpendMonth.setText("Left to spend this month: "+ mOverview.getLeftToSpendThisMonth() + " KM");
-        String canSpendTodayRounded = String.format("Left to spend this day: %.2f KM", mOverview.getLeftToSpendToday() );
-        mCanSpendToday.setText(canSpendTodayRounded);
+
+        if(mOverview.getTargetMonthGoal() <= 0){
+            mCanSpendMonth.setText("To see this info, set goal first.");
+            mCanSpendToday.setText("To see this info, set goal first.");
+        }else {
+            mCanSpendMonth.setText("Left to spend this month: " + mOverview.getLeftToSpendThisMonth() + " KM");
+            String canSpendTodayRounded = String.format("Left to spend this day: %.2f KM", mOverview.getLeftToSpendToday());
+            mCanSpendToday.setText(canSpendTodayRounded);
+        }
     }
 
     public void updateUI(){
