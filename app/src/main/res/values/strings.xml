@@ -20,6 +20,17 @@
     <string name="add_spendings_label"> New Spending </string>
     <string name="title_activity_settings">Settings</string>
 
+
+    <!-- Strings related to overview -->
+    <string name="overview_title"> Overview for: %1s </string>
+    <string name="month_total"> Total this month: %1s KM </string>
+    <string name="current_month_goal" formatted="false"> Goal for %1s: %2s KM </string>
+    <string name="left_to_spend_month"> Left to spend this month: %1s </string>
+    <string name="today_total"> Total today: %1s KM </string>
+    <string name="left_to_spend_today"> Left to spend today: %1s </string>
+    <string name="goal_not_set_general"> Goal not set for %1s </string>
+    <string name="set_goal_warning"> To see this info, set goal first. </string>
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->

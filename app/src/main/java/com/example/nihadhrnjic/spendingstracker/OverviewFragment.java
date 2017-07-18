@@ -32,7 +32,7 @@ public class OverviewFragment extends Fragment {
     private static final int CHOOSE_MONTH_CODE = 0;
 
     private Overview mOverview;
-    private Realm mRealmInstance;
+    private final Realm mRealmInstance = Realm.getDefaultInstance();
     private int mTargetMonth;
 
     private TextView mTotal;
@@ -45,12 +45,8 @@ public class OverviewFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mRealmInstance = Realm.getDefaultInstance();
         mTargetMonth = DateTime.now().getMonthOfYear();
         mOverview = new Overview(mTargetMonth);
-
-        setTitle();
     }
 
     @Nullable
@@ -69,11 +65,7 @@ public class OverviewFragment extends Fragment {
             }
         });
 
-        setTotalToday();
-        setSpendingGoal();
-        setTotalForMonth();
-        setCanSpend();
-
+        updateUI();
         return view;
     }
 
@@ -97,35 +89,35 @@ public class OverviewFragment extends Fragment {
     }
 
     private void setTotalForMonth(){
-        mTotal.setText("Total this month: "+ mOverview.getTargetMonthTotal() + " KM");
+        mTotal.setText(getString(R.string.month_total, mOverview.getTargetMonthTotal()+""));
     }
 
     private void setTotalToday(){
-        mTotalToday.setText("Total today: "+ mOverview.getDailyTotal()+" KM");
+        mTotalToday.setText(getString(R.string.today_total, mOverview.getDailyTotal()+""));
     }
 
     private void setTitle(){
-        getActivity().setTitle("Overview for : "+ new DateTime(2017, mTargetMonth, 1, 0, 0).toString("MMMM"));
+        getActivity().setTitle(getString(R.string.overview_title, new DateTime(2017, mTargetMonth, 1, 0, 0).toString("MMMM")));
     }
 
     private void setSpendingGoal(){
         double goal = mOverview.getTargetMonthGoal();
         if(goal <= 0){
-            mSpendingGoal.setText("Goal not set for "+new DateTime().toString("MMMM"));
+            mSpendingGoal.setText(getString(R.string.goal_not_set_general, new DateTime().toString("MMMM")));
         }else{
-            mSpendingGoal.setText("Goal for "+new DateTime().toString("MMMM")+": "+mOverview.getTargetMonthGoal() + " KM");
+            mSpendingGoal.setText(getString(R.string.current_month_goal, new DateTime().toString("MMMM"), +mOverview.getTargetMonthGoal() + ""));
         }
     }
 
     private void setCanSpend(){
 
         if(mOverview.getTargetMonthGoal() <= 0){
-            mCanSpendMonth.setText("To see this info, set goal first.");
-            mCanSpendToday.setText("To see this info, set goal first.");
+            mCanSpendMonth.setText(getString(R.string.set_goal_warning));
+            mCanSpendToday.setText(getString(R.string.set_goal_warning));
         }else {
-            mCanSpendMonth.setText("Left to spend this month: " + mOverview.getLeftToSpendThisMonth() + " KM");
-            String canSpendTodayRounded = String.format("Left to spend this day: %.2f KM", mOverview.getLeftToSpendToday());
-            mCanSpendToday.setText(canSpendTodayRounded);
+            String canSpendTodayRounded = String.format("%.2f", mOverview.getLeftToSpendToday());
+            mCanSpendToday.setText(getString(R.string.left_to_spend_today, canSpendTodayRounded));
+            mCanSpendMonth.setText(getString(R.string.left_to_spend_month, mOverview.getLeftToSpendThisMonth() + ""));
         }
     }
 
