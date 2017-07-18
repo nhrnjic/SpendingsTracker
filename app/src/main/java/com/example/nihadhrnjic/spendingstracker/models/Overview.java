@@ -57,6 +57,10 @@ public class Overview {
         SpendingsGoal goal = mRealm.where(SpendingsGoal.class)
                 .between("Date", monthBegin.toDate(), monthEnd.toDate()).findFirst();
 
+        if(goal == null){
+            return 0;
+        }
+
         return goal.Amount;
     }
 
