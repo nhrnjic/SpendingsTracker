@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.nihadhrnjic.spendingstracker.ActivityMain">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:id="@+id/change_month_id"
+        android:orderInCategory="1"
+        android:title="@string/change_month"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/add_money_id"
+        android:orderInCategory="2"
+        android:title="@string/add_money"
+        />
 </menu>

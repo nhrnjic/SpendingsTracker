@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,7 +33,6 @@ public class OverviewFragment extends Fragment {
     private static final int CHOOSE_MONTH_CODE = 0;
 
     private Overview mOverview;
-    private final Realm mRealmInstance = Realm.getDefaultInstance();
     private int mTargetMonth;
 
     private TextView mTotal;
@@ -40,13 +40,12 @@ public class OverviewFragment extends Fragment {
     private TextView mSpendingGoal;
     private TextView mCanSpendMonth;
     private TextView mCanSpendToday;
-    private Button mChangeMonthButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTargetMonth = DateTime.now().getMonthOfYear();
-        mOverview = new Overview(mTargetMonth);
+        mOverview = new Overview();
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -56,15 +55,6 @@ public class OverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         bindUIWidgets(view);
 
-        mChangeMonthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MonthPicker monthPicker = new MonthPicker();
-                monthPicker.setTargetFragment(OverviewFragment.this, CHOOSE_MONTH_CODE);
-                monthPicker.show(getFragmentManager(), CHOOSE_MONTH_FRAGMENT);
-            }
-        });
-
         updateUI();
         return view;
     }
@@ -72,7 +62,21 @@ public class OverviewFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_overview, menu);
+        inflater.inflate(R.menu.menu_activity_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.add_money_id:
+                Log.d("MENU", "Add money");
+                return true;
+            case R.id.change_month_id:
+                changeOverviewMonth();
+                return true;
+            default: return true;
+        }
     }
 
     @Override
@@ -83,8 +87,12 @@ public class OverviewFragment extends Fragment {
         }
 
         if(requestCode == CHOOSE_MONTH_CODE){
-            mTargetMonth = data.getIntExtra(MonthPicker.MONTH_INDEX_EXTRA, mTargetMonth);
-            setTitle();
+            int newTargetMonth = data.getIntExtra(MonthPicker.MONTH_INDEX_EXTRA, mTargetMonth);
+            if(newTargetMonth != mTargetMonth){
+                mOverview.setMonth(newTargetMonth);
+                mTargetMonth = newTargetMonth;
+                updateUI();
+            }
         }
     }
 
@@ -97,15 +105,15 @@ public class OverviewFragment extends Fragment {
     }
 
     private void setTitle(){
-        getActivity().setTitle(getString(R.string.overview_title, new DateTime(2017, mTargetMonth, 1, 0, 0).toString("MMMM")));
+        getActivity().setTitle(getString(R.string.overview_title, mOverview.getCurrentMonthName()));
     }
 
     private void setSpendingGoal(){
         double goal = mOverview.getTargetMonthGoal();
         if(goal <= 0){
-            mSpendingGoal.setText(getString(R.string.goal_not_set_general, new DateTime().toString("MMMM")));
+            mSpendingGoal.setText(getString(R.string.goal_not_set_general, mOverview.getCurrentMonthName()));
         }else{
-            mSpendingGoal.setText(getString(R.string.current_month_goal, new DateTime().toString("MMMM"), +mOverview.getTargetMonthGoal() + ""));
+            mSpendingGoal.setText(getString(R.string.current_month_goal, mOverview.getCurrentMonthName(), +mOverview.getTargetMonthGoal() + ""));
         }
     }
 
@@ -135,7 +143,11 @@ public class OverviewFragment extends Fragment {
         mSpendingGoal = (TextView) view.findViewById(R.id.spending_goal_id);
         mCanSpendMonth = (TextView) view.findViewById(R.id.can_spend_month_id);
         mCanSpendToday = (TextView) view.findViewById(R.id.can_spend_today_id);
-        mChangeMonthButton = (Button) view.findViewById(R.id.change_month_id);
-        mChangeMonthButton = (Button) view.findViewById(R.id.change_month_id);
+    }
+
+    private void changeOverviewMonth(){
+        MonthPicker monthPicker = new MonthPicker();
+        monthPicker.setTargetFragment(this, CHOOSE_MONTH_CODE);
+        monthPicker.show(getFragmentManager(), CHOOSE_MONTH_FRAGMENT);
     }
 }

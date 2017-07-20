@@ -88,12 +88,6 @@ public class ActivityMain extends AppCompatActivity implements GoalItemDialog.On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
-        return true;
-    }
-
-    @Override
     public void onComplete() {
        // mGoalUpdatedListener.onUpdate();
     }

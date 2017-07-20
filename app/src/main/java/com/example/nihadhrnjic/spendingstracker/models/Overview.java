@@ -10,11 +10,19 @@ import io.realm.Realm;
 
 public class Overview {
 
-    private Realm mRealm = Realm.getDefaultInstance();
+    private final Realm mRealm = Realm.getDefaultInstance();
     private int mTargetMonth;
 
-    public Overview(int month){
+    public Overview(){
+        mTargetMonth = DateTime.now().getMonthOfYear();
+    }
+
+    public void setMonth(int month){
         mTargetMonth = month;
+    }
+
+    public String getCurrentMonthName(){
+        return new DateTime(2017, mTargetMonth, 1, 0, 0).toString("MMMM");
     }
 
     public double getTargetMonthTotal(){
