@@ -147,6 +147,7 @@ public class ActivityMain extends AppCompatActivity implements GoalItemDialog.On
                 });
                 break;
             case 2:
+                mAddButton.setVisibility(View.VISIBLE);
                 mAddButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

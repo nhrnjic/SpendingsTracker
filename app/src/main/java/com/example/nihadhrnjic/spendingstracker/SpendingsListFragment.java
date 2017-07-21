@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by nihadhrnjic on 6/21/17.
@@ -87,8 +88,6 @@ public class SpendingsListFragment extends Fragment {
 
     public class SpendingsItemAdapter extends RecyclerView.Adapter<SpendingsItemViewHolder>{
 
-        private RealmResults<SpendingsItem> mItems;
-
         @Override
         public int getItemCount() {
             return mRealmInstance.where(SpendingsItem.class).findAll().size();
@@ -106,7 +105,10 @@ public class SpendingsListFragment extends Fragment {
         @Override
         public void onBindViewHolder(SpendingsItemViewHolder holder, int position) {
 
-            SpendingsItem item = mRealmInstance.where(SpendingsItem.class).findAll().get(position);
+            SpendingsItem item = mRealmInstance.where(SpendingsItem.class)
+                    .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING })
+                    .get(position);
+
             holder.setupModel(item);
         }
     }
