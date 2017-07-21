@@ -24,7 +24,7 @@
     <string name="remove_money"> Remove Money </string>
     <string name="money_dialog_add"> Add Money </string>
     <string name="money_dialog_remove"> Remove Money </string>
-    <string name="money_preference_key"> money_amount_key </string>
+    <string name="pref_money"> money_amount_key </string>
 
 
     <!-- Strings related to overview -->

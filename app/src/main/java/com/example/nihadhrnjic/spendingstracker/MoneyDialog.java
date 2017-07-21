@@ -42,7 +42,6 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
 
         mAddMoney = getArguments().getBoolean(ADD_MONEY_ARGS, true);
 
-
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_add_money, null);
         mMoneyInput = (EditText) view.findViewById(R.id.add_money_id);
         mMoneyInput.addTextChangedListener(new TextWatcher() {
@@ -62,7 +61,7 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
             }
         });
 
-        float moneyTotal = LocalPreferences.getFloat(getActivity(), "money_amount_key");
+        float moneyTotal = LocalPreferences.getFloat(getActivity(), getString(R.string.pref_money));
         String formatedMoneyTotal = String.format("%.2f", moneyTotal);
         String title = "Add Money ("+formatedMoneyTotal+" KM)";
 
@@ -86,11 +85,11 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
     }
 
     private void updateMoney(){
-        float currentMoneyTotal = LocalPreferences.getFloat(getActivity(), "money_amount_key");
+        float currentMoneyTotal = LocalPreferences.getFloat(getActivity(), getString(R.string.pref_money));
         if(mAddMoney){
-            LocalPreferences.saveFloat(getActivity(), "money_amount_key", currentMoneyTotal + Float.valueOf(mMoney));
+            LocalPreferences.saveFloat(getActivity(), getString(R.string.pref_money), currentMoneyTotal + Float.valueOf(mMoney));
         }else{
-            LocalPreferences.saveFloat(getActivity(), "money_amount_key", currentMoneyTotal - Float.valueOf(mMoney));
+            LocalPreferences.saveFloat(getActivity(), getString(R.string.pref_money), currentMoneyTotal - Float.valueOf(mMoney));
         }
     }
 }

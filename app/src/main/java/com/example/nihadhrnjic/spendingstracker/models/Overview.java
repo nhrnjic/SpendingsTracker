@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.nihadhrnjic.spendingstracker.LocalPreferences;
+import com.example.nihadhrnjic.spendingstracker.R;
 
 import org.joda.time.DateTime;
 
@@ -54,7 +55,7 @@ public class Overview {
     }
 
     public float getTotalMoney(Context context){
-        return LocalPreferences.getFloat(context, "money_amount_key");
+        return LocalPreferences.getFloat(context, context.getString(R.string.pref_money));
     }
 
     private double calculateMonthlyTotal(){
