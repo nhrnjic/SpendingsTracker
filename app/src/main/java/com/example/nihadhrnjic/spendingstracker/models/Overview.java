@@ -1,5 +1,9 @@
 package com.example.nihadhrnjic.spendingstracker.models;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import org.joda.time.DateTime;
 
 import io.realm.Realm;
@@ -47,6 +51,11 @@ public class Overview {
         return calculateLeftToSpendToday();
     }
 
+    public float getTotalMoney(Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getFloat("money_amount_key", 0);
+    }
+
     private double calculateMonthlyTotal(){
         DateTime monthBegin = new DateTime().withMonthOfYear(mTargetMonth).withDayOfMonth(1);
         DateTime monthEnd = monthBegin.plusMonths(1).minusDays(1);
@@ -88,5 +97,4 @@ public class Overview {
         double dailyAverage = getLeftToSpendThisMonth() / (daysLeftThisMonth + 1);
         return dailyAverage - getDailyTotal();
     }
-
 }

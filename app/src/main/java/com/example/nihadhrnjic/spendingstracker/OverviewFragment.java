@@ -30,7 +30,10 @@ import io.realm.Realm;
 public class OverviewFragment extends Fragment {
 
     private static final String CHOOSE_MONTH_FRAGMENT = "choose_month_fragment";
+    private static final String ADD_MONEY_DIALOG = "add_money_dialog";
+
     private static final int CHOOSE_MONTH_CODE = 0;
+    private static final int UPDATE_MONEY_CODE = 1;
 
     private Overview mOverview;
     private int mTargetMonth;
@@ -40,6 +43,7 @@ public class OverviewFragment extends Fragment {
     private TextView mSpendingGoal;
     private TextView mCanSpendMonth;
     private TextView mCanSpendToday;
+    private TextView mTotalMoney;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +74,10 @@ public class OverviewFragment extends Fragment {
 
         switch (item.getItemId()){
             case R.id.add_money_id:
-                Log.d("MENU", "Add money");
+                openMoneyDialog(true);
+                return true;
+            case R.id.remove_money_id:
+                openMoneyDialog(false);
                 return true;
             case R.id.change_month_id:
                 changeOverviewMonth();
@@ -93,6 +100,10 @@ public class OverviewFragment extends Fragment {
                 mTargetMonth = newTargetMonth;
                 updateUI();
             }
+        }
+
+        if(requestCode == UPDATE_MONEY_CODE){
+            updateUI();
         }
     }
 
@@ -117,6 +128,11 @@ public class OverviewFragment extends Fragment {
         }
     }
 
+    private void setTotalMoney(){
+        String totalMoneyRounded = String.format("%.2f", mOverview.getTotalMoney(getActivity()));
+        mTotalMoney.setText(getString(R.string.total_money, totalMoneyRounded));
+    }
+
     private void setCanSpend(){
 
         if(mOverview.getTargetMonthGoal() <= 0){
@@ -135,6 +151,7 @@ public class OverviewFragment extends Fragment {
         setSpendingGoal();
         setTotalForMonth();
         setCanSpend();
+        setTotalMoney();
     }
 
     private void bindUIWidgets(View view){
@@ -143,11 +160,18 @@ public class OverviewFragment extends Fragment {
         mSpendingGoal = (TextView) view.findViewById(R.id.spending_goal_id);
         mCanSpendMonth = (TextView) view.findViewById(R.id.can_spend_month_id);
         mCanSpendToday = (TextView) view.findViewById(R.id.can_spend_today_id);
+        mTotalMoney = (TextView) view.findViewById(R.id.total_money_id);
     }
 
     private void changeOverviewMonth(){
         MonthPicker monthPicker = new MonthPicker();
         monthPicker.setTargetFragment(this, CHOOSE_MONTH_CODE);
         monthPicker.show(getFragmentManager(), CHOOSE_MONTH_FRAGMENT);
+    }
+
+    private void openMoneyDialog(boolean addMoney){
+        MoneyDialog moneyDialog = MoneyDialog.newInstance(addMoney);
+        moneyDialog.setTargetFragment(this, UPDATE_MONEY_CODE);
+        moneyDialog.show(getFragmentManager(), ADD_MONEY_DIALOG);
     }
 }

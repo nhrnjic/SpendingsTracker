@@ -13,4 +13,11 @@
         android:orderInCategory="2"
         android:title="@string/add_money"
         />
+
+
+    <item
+        android:id="@+id/remove_money_id"
+        android:orderInCategory="3"
+        android:title="@string/remove_money"
+        />
 </menu>
