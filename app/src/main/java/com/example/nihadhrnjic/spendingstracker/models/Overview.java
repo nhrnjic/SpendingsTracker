@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.nihadhrnjic.spendingstracker.LocalPreferences;
+
 import org.joda.time.DateTime;
 
 import io.realm.Realm;
@@ -51,9 +53,8 @@ public class Overview {
         return calculateLeftToSpendToday();
     }
 
-    public float getTotalMoney(Activity activity){
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        return sharedPref.getFloat("money_amount_key", 0);
+    public float getTotalMoney(Context context){
+        return LocalPreferences.getFloat(context, "money_amount_key");
     }
 
     private double calculateMonthlyTotal(){

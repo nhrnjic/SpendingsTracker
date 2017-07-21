@@ -156,6 +156,8 @@ public class AddSpendingFragment extends Fragment {
                     @Override
                     public void execute(Realm realm) {
                         SpendingsItem item = realm.copyToRealm(mSpendingsItem);
+                        float currentAmount = LocalPreferences.getFloat(getActivity(), "money_amount_key");
+                        LocalPreferences.saveFloat(getActivity(), "money_amount_key", currentAmount - (float) mSpendingsItem.Amount);
                     }
                 });
 

@@ -62,8 +62,7 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
             }
         });
 
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        float moneyTotal = sharedPref.getFloat("money_amount_key", 0);
+        float moneyTotal = LocalPreferences.getFloat(getActivity(), "money_amount_key");
         String formatedMoneyTotal = String.format("%.2f", moneyTotal);
         String title = "Add Money ("+formatedMoneyTotal+" KM)";
 
@@ -87,14 +86,11 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
     }
 
     private void updateMoney(){
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        float currentMoneyTotal = sharedPref.getFloat("money_amount_key", 0);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        float currentMoneyTotal = LocalPreferences.getFloat(getActivity(), "money_amount_key");
         if(mAddMoney){
-            editor.putFloat("money_amount_key", currentMoneyTotal + Float.valueOf(mMoney));
+            LocalPreferences.saveFloat(getActivity(), "money_amount_key", currentMoneyTotal + Float.valueOf(mMoney));
         }else{
-            editor.putFloat("money_amount_key", currentMoneyTotal - Float.valueOf(mMoney));
+            LocalPreferences.saveFloat(getActivity(), "money_amount_key", currentMoneyTotal - Float.valueOf(mMoney));
         }
-        editor.commit();
     }
 }
