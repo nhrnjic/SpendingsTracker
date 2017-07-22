@@ -115,7 +115,7 @@ public class OverviewFragment extends Fragment {
         mTotalToday.setText(getString(R.string.today_total, mOverview.getDailyTotal()+""));
     }
 
-    private void setTitle(){
+    public void setTitle(){
         getActivity().setTitle(getString(R.string.overview_title, mOverview.getCurrentMonthName()));
     }
 
@@ -146,7 +146,6 @@ public class OverviewFragment extends Fragment {
     }
 
     public void updateUI(){
-        setTitle();
         setTotalToday();
         setSpendingGoal();
         setTotalForMonth();
