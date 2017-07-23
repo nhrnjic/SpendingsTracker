@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,7 @@ public class ActivityMain extends AppCompatActivity implements GoalItemDialog.On
                 if(position == 0){
                     OverviewFragment fragment = (OverviewFragment) mSectionsPagerAdapter
                             .instantiateItem(mViewPager, position);
+                    fragment.setTitle();
                     fragment.updateUI();
                 }
 

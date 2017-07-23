@@ -12,7 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.nihadhrnjic.spendingstracker.models.Overview;
@@ -115,7 +117,7 @@ public class OverviewFragment extends Fragment {
         mTotalToday.setText(getString(R.string.today_total, mOverview.getDailyTotal()+""));
     }
 
-    private void setTitle(){
+    public void setTitle(){
         getActivity().setTitle(getString(R.string.overview_title, mOverview.getCurrentMonthName()));
     }
 
@@ -146,7 +148,6 @@ public class OverviewFragment extends Fragment {
     }
 
     public void updateUI(){
-        setTitle();
         setTotalToday();
         setSpendingGoal();
         setTotalForMonth();
