@@ -16,7 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class ActivityMain extends AppCompatActivity implements GoalItemDialog.OnGoalDialogFinishListener {
+public class ActivityMain extends AppCompatActivity{
 
     public interface OnMonthGoalUpdated{
         public void onUpdate();
@@ -84,14 +84,12 @@ public class ActivityMain extends AppCompatActivity implements GoalItemDialog.On
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.overview_icon);
+        tabLayout.getTabAt(1).setIcon(R.drawable.spendings_icon);
+        tabLayout.getTabAt(2).setIcon(R.drawable.goals_icon);
 
         mAddButton = (FloatingActionButton) findViewById(R.id.fab);
         handleFabButton(mViewPager.getCurrentItem());
-    }
-
-    @Override
-    public void onComplete() {
-       // mGoalUpdatedListener.onUpdate();
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -118,19 +116,6 @@ public class ActivityMain extends AppCompatActivity implements GoalItemDialog.On
         public int getCount() {
             // Show 3 total pages.
             return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Overview";
-                case 1:
-                    return "Spendings";
-                case 2:
-                    return "Goals";
-            }
-            return null;
         }
     }
 

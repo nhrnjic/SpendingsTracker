@@ -52,6 +52,7 @@ public class OverviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mOverview = new Overview();
         setHasOptionsMenu(true);
+        setTitle();
     }
 
     @Nullable
@@ -60,7 +61,6 @@ public class OverviewFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         bindUIWidgets(view);
-
         updateUI();
         return view;
     }
