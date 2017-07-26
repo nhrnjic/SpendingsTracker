@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/overview_wrapper_id"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
@@ -11,48 +11,110 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/total_money_id"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        app:cardCornerRadius="4dp"
+        android:elevation="2dp">
 
-    <TextView
-        android:id="@+id/total_amount_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hello World"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/spending_goal_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/overview_general_heading"
+                android:textSize="24sp"
+                android:paddingTop="15dp"
+                android:gravity="center"/>
 
-    <TextView
-        android:id="@+id/can_spend_month_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+            <TextView
+                android:id="@+id/total_money_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="16sp"
+                android:gravity="center_horizontal"/>
 
-    <TextView
-        android:id="@+id/total_today_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+            <TextView
+                android:id="@+id/total_amount_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World"
+                android:layout_marginTop="20dp"
+                android:textSize="16sp"
+                android:gravity="center_horizontal"/>
 
-    <TextView
-        android:id="@+id/can_spend_today_id"
+            <TextView
+                android:id="@+id/spending_goal_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="16sp"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/can_spend_month_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="20dp"
+                android:textSize="16sp"
+                android:gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"/>
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        app:cardCornerRadius="4dp"
+        android:elevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/overview_today_heading"
+                android:textSize="24sp"
+                android:paddingTop="15dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/total_today_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="16sp"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/can_spend_today_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="16sp"
+                android:paddingBottom="20dp"
+                android:gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
 

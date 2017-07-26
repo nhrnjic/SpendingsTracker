@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SpendingsTracker</string>
+    <string name="app_name">Spendings Tracker</string>
     <string name="item_name"> Name </string>
     <string name="item_desc"> Description </string>
     <string name="item_date"> Date </string>
@@ -29,14 +29,16 @@
 
     <!-- Strings related to overview -->
     <string name="overview_title"> Overview for: %1s </string>
-    <string name="month_total"> Total this month: %1s KM </string>
+    <string name="month_total"> Spendings this month: %1s KM </string>
     <string name="current_month_goal" formatted="false"> Spending Goal for %1s: %2s KM </string>
     <string name="left_to_spend_month"> Left to spend this month: %1s </string>
-    <string name="today_total"> Total today: %1s KM </string>
+    <string name="today_total"> Spendings today: %1s KM </string>
     <string name="left_to_spend_today"> Left to spend today: %1s </string>
     <string name="goal_not_set_general"> Goal not set for %1s </string>
     <string name="set_goal_warning"> To see this info, set goal first. </string>
     <string name="total_money"> You currently have: %1s KM </string>
+    <string name="overview_general_heading"> General Overview </string>
+    <string name="overview_today_heading"> Overview for today </string>
 
     <!-- Strings related to Settings -->
 

@@ -80,9 +80,9 @@ public class SpendingsListFragment extends Fragment {
 
         public void setupModel(SpendingsItem item){
             mItemName.setText(item.Name);
-            mItemPrice.setText("Amount: "+ item.Amount + " KM");
+            mItemPrice.setText(item.Amount + " KM");
             mItemCategory.setText(item.Category.Name);
-            mItemDate.setText("Date spent:   "+item.getDate().toString("dd/MM/yyyy"));
+            mItemDate.setText(item.getDate().toString("dd/MM/yyyy"));
         }
     }
 
