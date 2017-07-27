@@ -9,13 +9,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.nihadhrnjic.spendingstracker.models.Category;
 import com.example.nihadhrnjic.spendingstracker.models.SpendingsItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -33,11 +39,17 @@ public class SpendingsListFragment extends Fragment {
 
     private Realm mRealmInstance;
     private SpendingsItemAdapter mAdapter;
+    private List<Integer> mItemsForDeletion;
+    private boolean mShowSpendingCheckbox;
+    private MenuItem mDeleteItem;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRealmInstance = Realm.getDefaultInstance();
+        mItemsForDeletion = new ArrayList<>();
+        mShowSpendingCheckbox = false;
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -62,27 +74,98 @@ public class SpendingsListFragment extends Fragment {
         updateList();
     }
 
-    public class SpendingsItemViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_spendings, menu);
+        mDeleteItem = menu.findItem(R.id.delete_item_id);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.delete_item_id:
+                for (int itemForDeletion : mItemsForDeletion){
+                    Log.d("DELETE", itemForDeletion+"");
+                }
+
+                return true;
+        }
+
+        return true;
+    }
+
+    public class SpendingsItemViewHolder extends RecyclerView.ViewHolder
+            implements View.OnLongClickListener, View.OnClickListener{
+
+        private int mPosition;
         private TextView mItemName;
         private TextView mItemPrice;
         private TextView mItemCategory;
         private TextView mItemDate;
+        private CheckBox mItemChecked;
+
+        @Override
+        public void onClick(View v) {
+            if(mShowSpendingCheckbox){
+                mShowSpendingCheckbox = false;
+                mItemsForDeletion.clear();
+                mItemChecked.setVisibility(View.INVISIBLE);
+                mDeleteItem.setVisible(false);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if(!mShowSpendingCheckbox){
+                mShowSpendingCheckbox = true;
+                mItemChecked.setVisibility(View.VISIBLE);
+                mDeleteItem.setVisible(true);
+                mAdapter.notifyDataSetChanged();
+                return false;
+            }else{
+                return false;
+            }
+        }
 
         public SpendingsItemViewHolder(View view){
             super(view);
 
+            view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
+
+            mPosition = -1;
             mItemName = (TextView) view.findViewById(R.id.spendings_item_name);
             mItemPrice = (TextView) view.findViewById(R.id.spendings_item_amount);
             mItemCategory = (TextView) view.findViewById(R.id.spendings_item_category);
             mItemDate = (TextView) view.findViewById(R.id.spendings_item_date);
+            mItemChecked = (CheckBox) view.findViewById(R.id.spendings_delete_id);
+
+            mItemChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        addItemForDeletion(mPosition);
+                    }else{
+                        removeItemForDeletion(mPosition);
+                    }
+                }
+            });
         }
 
-        public void setupModel(SpendingsItem item){
+        public void setupModel(SpendingsItem item, int position){
+            mPosition = position;
             mItemName.setText(item.Name);
             mItemPrice.setText(item.Amount + " KM");
             mItemCategory.setText(item.Category.Name);
             mItemDate.setText(item.getDate().toString("dd/MM/yyyy"));
+            mItemChecked.setChecked(false);
+
+            if(mShowSpendingCheckbox){
+                mItemChecked.setVisibility(View.VISIBLE);
+            }else{
+                mItemChecked.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -109,7 +192,7 @@ public class SpendingsListFragment extends Fragment {
                     .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING })
                     .get(position);
 
-            holder.setupModel(item);
+            holder.setupModel(item, position);
         }
     }
 
@@ -120,4 +203,17 @@ public class SpendingsListFragment extends Fragment {
     public void setTitle(){
         getActivity().setTitle("All Spendings");
     }
+
+    private void addItemForDeletion(int position){
+        mItemsForDeletion.add(position);
+    }
+
+    private void removeItemForDeletion(int position){
+        for(int i = 0; i < mItemsForDeletion.size(); i++){
+            if(mItemsForDeletion.get(i) == position){
+                mItemsForDeletion.remove(i);
+            }
+        }
+    }
+
 }
