@@ -19,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.nihadhrnjic.spendingstracker.models.Category;
+import com.example.nihadhrnjic.spendingstracker.models.SpendingsGoal;
 import com.example.nihadhrnjic.spendingstracker.models.SpendingsItem;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class SpendingsListFragment extends Fragment {
 
     private Realm mRealmInstance;
     private SpendingsItemAdapter mAdapter;
-    private List<Integer> mItemsForDeletion;
+    private List<SpendingsItem> mItemsForDeletion;
     private boolean mShowSpendingCheckbox;
     private MenuItem mDeleteItem;
 
@@ -84,10 +85,15 @@ public class SpendingsListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.delete_item_id:
-                for (int itemForDeletion : mItemsForDeletion){
-                    Log.d("DELETE", itemForDeletion+"");
-                }
-
+                mRealmInstance.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        for(SpendingsItem spendingsItem: mItemsForDeletion){
+                            spendingsItem.deleteFromRealm();
+                        }
+                    }
+                });
+                mAdapter.notifyDataSetChanged();
                 return true;
         }
 
@@ -97,7 +103,7 @@ public class SpendingsListFragment extends Fragment {
     public class SpendingsItemViewHolder extends RecyclerView.ViewHolder
             implements View.OnLongClickListener, View.OnClickListener{
 
-        private int mPosition;
+        SpendingsItem mSpendingsItem;
         private TextView mItemName;
         private TextView mItemPrice;
         private TextView mItemCategory;
@@ -134,7 +140,6 @@ public class SpendingsListFragment extends Fragment {
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
 
-            mPosition = -1;
             mItemName = (TextView) view.findViewById(R.id.spendings_item_name);
             mItemPrice = (TextView) view.findViewById(R.id.spendings_item_amount);
             mItemCategory = (TextView) view.findViewById(R.id.spendings_item_category);
@@ -145,16 +150,16 @@ public class SpendingsListFragment extends Fragment {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
-                        addItemForDeletion(mPosition);
+                        addItemForDeletion(mSpendingsItem);
                     }else{
-                        removeItemForDeletion(mPosition);
+                        //removeItemForDeletion(mPosition);
                     }
                 }
             });
         }
 
-        public void setupModel(SpendingsItem item, int position){
-            mPosition = position;
+        public void setupModel(SpendingsItem item){
+            mSpendingsItem = item;
             mItemName.setText(item.Name);
             mItemPrice.setText(item.Amount + " KM");
             mItemCategory.setText(item.Category.Name);
@@ -192,7 +197,7 @@ public class SpendingsListFragment extends Fragment {
                     .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING })
                     .get(position);
 
-            holder.setupModel(item, position);
+            holder.setupModel(item);
         }
     }
 
@@ -204,16 +209,16 @@ public class SpendingsListFragment extends Fragment {
         getActivity().setTitle("All Spendings");
     }
 
-    private void addItemForDeletion(int position){
-        mItemsForDeletion.add(position);
+    private void addItemForDeletion(SpendingsItem item){
+        mItemsForDeletion.add(item);
     }
 
-    private void removeItemForDeletion(int position){
-        for(int i = 0; i < mItemsForDeletion.size(); i++){
-            if(mItemsForDeletion.get(i) == position){
-                mItemsForDeletion.remove(i);
-            }
-        }
-    }
+//    private void removeItemForDeletion(int position){
+//        for(int i = 0; i < mItemsForDeletion.size(); i++){
+//            if(mItemsForDeletion.get(i) == position){
+//                mItemsForDeletion.remove(i);
+//            }
+//        }
+//    }
 
 }
