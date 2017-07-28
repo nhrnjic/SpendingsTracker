@@ -89,6 +89,8 @@ public class SpendingsListFragment extends Fragment {
                     @Override
                     public void execute(Realm realm) {
                         for(SpendingsItem spendingsItem: mItemsForDeletion){
+                            float currentAmount = LocalPreferences.getFloat(getActivity(), getString(R.string.pref_money));
+                            LocalPreferences.saveFloat(getActivity(), getString(R.string.pref_money), currentAmount + (float)spendingsItem.Amount);
                             spendingsItem.deleteFromRealm();
                         }
                     }
