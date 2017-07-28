@@ -154,7 +154,7 @@ public class SpendingsListFragment extends Fragment {
                     if(isChecked){
                         addItemForDeletion(mSpendingsItem);
                     }else{
-                        //removeItemForDeletion(mPosition);
+                        removeItemForDeletion(mSpendingsItem);
                     }
                 }
             });
@@ -215,12 +215,12 @@ public class SpendingsListFragment extends Fragment {
         mItemsForDeletion.add(item);
     }
 
-//    private void removeItemForDeletion(int position){
-//        for(int i = 0; i < mItemsForDeletion.size(); i++){
-//            if(mItemsForDeletion.get(i) == position){
-//                mItemsForDeletion.remove(i);
-//            }
-//        }
-//    }
+    private void removeItemForDeletion(SpendingsItem item){
+        for(int i = 0; i < mItemsForDeletion.size(); i++){
+            if(mItemsForDeletion.get(i).equals(item)){
+                mItemsForDeletion.remove(i);
+            }
+        }
+    }
 
 }
