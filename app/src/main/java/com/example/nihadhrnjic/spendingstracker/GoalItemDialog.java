@@ -28,26 +28,10 @@ import io.realm.Realm;
 
 public class GoalItemDialog extends DialogFragment {
 
-    public interface OnGoalDialogFinishListener{
-        public void onComplete();
-    }
-
-    private OnGoalDialogFinishListener mDialogListener;
     private EditText mGoalAmount;
     private TextView mLabel;
     private SpendingsGoal mGoal;
     private final Realm realm = Realm.getDefaultInstance();
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try{
-            mDialogListener = (OnGoalDialogFinishListener) context;
-        }catch (ClassCastException e){
-            throw new ClassCastException(context.toString()
-                    + " must implement OnGoalDialogFinishListener!");
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,7 +96,6 @@ public class GoalItemDialog extends DialogFragment {
                     realm.copyToRealm(mGoal);
                 }else{
                     goal.Amount = mGoal.Amount;
-                    mDialogListener.onComplete();
                 }
 
             }
