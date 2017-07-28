@@ -36,11 +36,10 @@ import io.realm.Sort;
 public class SpendingsListFragment extends Fragment {
 
     private RecyclerView mSpendingsList;
-    private FloatingActionButton mNewItem;
 
     private Realm mRealmInstance;
     private SpendingsItemAdapter mAdapter;
-    private List<SpendingsItem> mItemsForDeletion;
+    private List<String> mItemsForDeletion;
     private boolean mShowSpendingCheckbox;
     private MenuItem mDeleteItem;
 
@@ -64,8 +63,6 @@ public class SpendingsListFragment extends Fragment {
         mSpendingsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mSpendingsList.setAdapter(mAdapter);
 
-        mNewItem = (FloatingActionButton) view.findViewById(R.id.fab);
-
         return view;
     }
 
@@ -88,10 +85,13 @@ public class SpendingsListFragment extends Fragment {
                 mRealmInstance.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        for(SpendingsItem spendingsItem: mItemsForDeletion){
-                            float currentAmount = LocalPreferences.getFloat(getActivity(), getString(R.string.pref_money));
-                            LocalPreferences.saveFloat(getActivity(), getString(R.string.pref_money), currentAmount + (float)spendingsItem.Amount);
-                            spendingsItem.deleteFromRealm();
+                        for(String spendingsItemId: mItemsForDeletion){
+                            SpendingsItem spendingsItem = getItemById(spendingsItemId);
+                            if(spendingsItem != null){
+                                float currentAmount = LocalPreferences.getFloat(getActivity(), getString(R.string.pref_money));
+                                LocalPreferences.saveFloat(getActivity(), getString(R.string.pref_money), currentAmount + (float)spendingsItem.Amount);
+                                spendingsItem.deleteFromRealm();
+                            }
                         }
                     }
                 });
@@ -152,9 +152,9 @@ public class SpendingsListFragment extends Fragment {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
-                        addItemForDeletion(mSpendingsItem);
+                        addItemForDeletion(mSpendingsItem.Id);
                     }else{
-                        removeItemForDeletion(mSpendingsItem);
+                        removeItemForDeletion(mSpendingsItem.Id);
                     }
                 }
             });
@@ -211,13 +211,18 @@ public class SpendingsListFragment extends Fragment {
         getActivity().setTitle("All Spendings");
     }
 
-    private void addItemForDeletion(SpendingsItem item){
-        mItemsForDeletion.add(item);
+    private SpendingsItem getItemById(String id){
+        return mRealmInstance.where(SpendingsItem.class)
+                .equalTo("Id", id).findFirst();
     }
 
-    private void removeItemForDeletion(SpendingsItem item){
+    private void addItemForDeletion(String id){
+        mItemsForDeletion.add(id);
+    }
+
+    private void removeItemForDeletion(String id){
         for(int i = 0; i < mItemsForDeletion.size(); i++){
-            if(mItemsForDeletion.get(i).equals(item)){
+            if(mItemsForDeletion.get(i).equals(id)){
                 mItemsForDeletion.remove(i);
             }
         }
