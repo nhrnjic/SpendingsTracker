@@ -3,6 +3,7 @@ package com.example.nihadhrnjic.spendingstracker.models;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.nihadhrnjic.spendingstracker.LocalPreferences;
 import com.example.nihadhrnjic.spendingstracker.R;
@@ -59,8 +60,13 @@ public class Overview {
     }
 
     private double calculateMonthlyTotal(){
-        DateTime monthBegin = new DateTime().withMonthOfYear(mTargetMonth).withDayOfMonth(1);
+        DateTime monthBegin = new DateTime().withMonthOfYear(mTargetMonth).withDayOfMonth(1)
+                .withTime(0,0,0,0);
+
         DateTime monthEnd = monthBegin.plusMonths(1).minusDays(1);
+
+        Log.d("Date Begin", monthBegin+"");
+        Log.d("Date End", monthEnd+"");
 
         double amount = mRealm.where(SpendingsItem.class)
                 .between("Date", monthBegin.toDate(), monthEnd.toDate())
@@ -70,7 +76,9 @@ public class Overview {
     }
 
     private double calculateMonthlyGoal(){
-        DateTime monthBegin = new DateTime().withMonthOfYear(mTargetMonth).withDayOfMonth(1);
+        DateTime monthBegin = new DateTime().withMonthOfYear(mTargetMonth).withDayOfMonth(1)
+                .withTime(0,0,0,0);
+
         DateTime monthEnd = monthBegin.plusMonths(1).minusDays(1);
 
         SpendingsGoal goal = mRealm.where(SpendingsGoal.class)
