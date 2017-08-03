@@ -22,7 +22,10 @@ import com.example.nihadhrnjic.spendingstracker.models.Category;
 import com.example.nihadhrnjic.spendingstracker.models.SpendingsGoal;
 import com.example.nihadhrnjic.spendingstracker.models.SpendingsItem;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
@@ -50,6 +53,10 @@ public class SpendingsListFragment extends Fragment {
         mItemsForDeletion = new ArrayList<>();
         mShowSpendingCheckbox = false;
         setHasOptionsMenu(true);
+
+        for(SpendingsItem item : getStartItemsForGroup()){
+            Log.d("GROUP START", item.Name);
+        }
     }
 
     @Nullable
@@ -178,9 +185,21 @@ public class SpendingsListFragment extends Fragment {
 
     public class SpendingsItemAdapter extends RecyclerView.Adapter<SpendingsItemViewHolder>{
 
+        private List<SpendingsItem> mItems = null;
+
+        public SpendingsItemAdapter(){
+            mItems = mRealmInstance.where(SpendingsItem.class)
+                    .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
+        }
+
         @Override
         public int getItemCount() {
             return mRealmInstance.where(SpendingsItem.class).findAll().size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return 0;
         }
 
         @Override
@@ -194,12 +213,35 @@ public class SpendingsListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(SpendingsItemViewHolder holder, int position) {
+            SpendingsItem item = mItems.get(position);
 
-            SpendingsItem item = mRealmInstance.where(SpendingsItem.class)
-                    .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING })
-                    .get(position);
 
             holder.setupModel(item);
+        }
+
+        private List<SpendingsItem> getStartItemsForGroup(){
+
+            List<SpendingsItem> startGroupItems = new ArrayList<>();
+            DateTime begin = new DateTime().withTime(0,0,0,0);
+            DateTime end = new DateTime().withTime(23,59,59,59);
+
+            SpendingsItem firstToday = mRealmInstance.where(SpendingsItem.class)
+                    .between("Date", begin.toDate(), end.toDate())
+                    .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING })
+                    .first();
+
+            begin = begin.minusDays(1);
+            end = end.minusDays(1);
+
+            SpendingsItem firstYesterday = mRealmInstance.where(SpendingsItem.class)
+                    .between("Date", begin.toDate(), end.toDate())
+                    .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING })
+                    .first();
+
+            startGroupItems.add(firstToday);
+            startGroupItems.add(firstYesterday);
+
+            return startGroupItems;
         }
     }
 
@@ -228,4 +270,28 @@ public class SpendingsListFragment extends Fragment {
         }
     }
 
+    private List<SpendingsItem> getStartItemsForGroup(){
+
+        List<SpendingsItem> startGroupItems = new ArrayList<>();
+        DateTime begin = new DateTime().withTime(0,0,0,0);
+        DateTime end = new DateTime().withTime(23,59,59,59);
+
+        List<SpendingsItem> firstToday = mRealmInstance.where(SpendingsItem.class)
+                .between("Date", begin.toDate(), end.toDate())
+                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
+
+        begin = begin.minusDays(1);
+        end = end.minusDays(1);
+
+        List<SpendingsItem> firstYesterday = mRealmInstance.where(SpendingsItem.class)
+                .between("Date", begin.toDate(), end.toDate())
+                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
+
+        if(firstToday.size() > 0 && firstYesterday.size() > 0){
+            startGroupItems.add(firstToday.get(0));
+            startGroupItems.add(firstYesterday.get(0));
+        }
+
+        return startGroupItems;
+    }
 }

@@ -65,9 +65,6 @@ public class Overview {
 
         DateTime monthEnd = monthBegin.plusMonths(1).minusDays(1);
 
-        Log.d("Date Begin", monthBegin+"");
-        Log.d("Date End", monthEnd+"");
-
         double amount = mRealm.where(SpendingsItem.class)
                 .between("Date", monthBegin.toDate(), monthEnd.toDate())
                 .sum("Amount").doubleValue();
