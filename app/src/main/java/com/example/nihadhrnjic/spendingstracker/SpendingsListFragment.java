@@ -53,10 +53,6 @@ public class SpendingsListFragment extends Fragment {
         mItemsForDeletion = new ArrayList<>();
         mShowSpendingCheckbox = false;
         setHasOptionsMenu(true);
-
-        for(SpendingsItem item : getStartItemsForGroup()){
-            Log.d("GROUP START", item.Name);
-        }
     }
 
     @Nullable
@@ -186,10 +182,12 @@ public class SpendingsListFragment extends Fragment {
     public class SpendingsItemAdapter extends RecyclerView.Adapter<SpendingsItemViewHolder>{
 
         private List<SpendingsItem> mItems = null;
+        private List<SpendingsItem> mGroupItems = null;
 
         public SpendingsItemAdapter(){
             mItems = mRealmInstance.where(SpendingsItem.class)
                     .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
+            mGroupItems = getStartItemsForGroup();
         }
 
         @Override
@@ -199,7 +197,8 @@ public class SpendingsListFragment extends Fragment {
 
         @Override
         public int getItemViewType(int position) {
-            return 0;
+            SpendingsItem item = mItems.get(position);
+            return mGroupItems.indexOf(item);
         }
 
         @Override
@@ -214,34 +213,9 @@ public class SpendingsListFragment extends Fragment {
         @Override
         public void onBindViewHolder(SpendingsItemViewHolder holder, int position) {
             SpendingsItem item = mItems.get(position);
-
-
             holder.setupModel(item);
-        }
 
-        private List<SpendingsItem> getStartItemsForGroup(){
-
-            List<SpendingsItem> startGroupItems = new ArrayList<>();
-            DateTime begin = new DateTime().withTime(0,0,0,0);
-            DateTime end = new DateTime().withTime(23,59,59,59);
-
-            SpendingsItem firstToday = mRealmInstance.where(SpendingsItem.class)
-                    .between("Date", begin.toDate(), end.toDate())
-                    .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING })
-                    .first();
-
-            begin = begin.minusDays(1);
-            end = end.minusDays(1);
-
-            SpendingsItem firstYesterday = mRealmInstance.where(SpendingsItem.class)
-                    .between("Date", begin.toDate(), end.toDate())
-                    .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING })
-                    .first();
-
-            startGroupItems.add(firstToday);
-            startGroupItems.add(firstYesterday);
-
-            return startGroupItems;
+            Log.d("INDEX", item.Name + " = "+getItemViewType(position));
         }
     }
 
@@ -276,21 +250,47 @@ public class SpendingsListFragment extends Fragment {
         DateTime begin = new DateTime().withTime(0,0,0,0);
         DateTime end = new DateTime().withTime(23,59,59,59);
 
-        List<SpendingsItem> firstToday = mRealmInstance.where(SpendingsItem.class)
-                .between("Date", begin.toDate(), end.toDate())
-                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
+//        // cus we have no today items -> just for testing
+//        begin = begin.minusDays(1);
+//        end = end.minusDays(1);
 
-        begin = begin.minusDays(1);
-        end = end.minusDays(1);
+        for(int i = 0; i < 3; i++){
+            // cus we have no today items -> just for testing
+            begin = begin.minusDays(1);
+            end = end.minusDays(1);
 
-        List<SpendingsItem> firstYesterday = mRealmInstance.where(SpendingsItem.class)
-                .between("Date", begin.toDate(), end.toDate())
-                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
+            List<SpendingsItem> result = mRealmInstance.where(SpendingsItem.class)
+                    .between("Date", begin.toDate(), end.toDate())
+                    .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
 
-        if(firstToday.size() > 0 && firstYesterday.size() > 0){
-            startGroupItems.add(firstToday.get(0));
-            startGroupItems.add(firstYesterday.get(0));
+            if(result.size() > 0){
+                startGroupItems.add(result.get(0));
+            }
         }
+
+//        List<SpendingsItem> firstToday = mRealmInstance.where(SpendingsItem.class)
+//                .between("Date", begin.toDate(), end.toDate())
+//                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
+//
+//        begin = begin.minusDays(1);
+//        end = end.minusDays(1);
+//
+//        List<SpendingsItem> firstYesterday = mRealmInstance.where(SpendingsItem.class)
+//                .between("Date", begin.toDate(), end.toDate())
+//                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
+//
+//        begin = begin.minusDays(1);
+//        end = end.minusDays(1);
+//
+//        List<SpendingsItem> firstOlder = mRealmInstance.where(SpendingsItem.class)
+//                .between("Date", begin.toDate(), end.toDate())
+//                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
+//
+//        if(firstToday.size() > 0 && firstYesterday.size() > 0 && firstOlder.size() > 0){
+//            startGroupItems.add(firstToday.get(0));
+//            startGroupItems.add(firstYesterday.get(0));
+//            startGroupItems.add(firstOlder.get(0));
+//        }
 
         return startGroupItems;
     }
