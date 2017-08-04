@@ -179,7 +179,93 @@ public class SpendingsListFragment extends Fragment {
         }
     }
 
-    public class SpendingsItemAdapter extends RecyclerView.Adapter<SpendingsItemViewHolder>{
+    public class SpendingsItemGroupDividerViewHolder extends RecyclerView.ViewHolder
+            implements View.OnLongClickListener, View.OnClickListener{
+
+        SpendingsItem mSpendingsItem;
+        private TextView mItemName;
+        private TextView mItemPrice;
+        private TextView mItemCategory;
+        private TextView mItemDate;
+        private TextView mGroupTitle;
+        private CheckBox mItemChecked;
+
+        @Override
+        public void onClick(View v) {
+            if(mShowSpendingCheckbox){
+                mShowSpendingCheckbox = false;
+                mItemsForDeletion.clear();
+                mItemChecked.setVisibility(View.INVISIBLE);
+                mDeleteItem.setVisible(false);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if(!mShowSpendingCheckbox){
+                mShowSpendingCheckbox = true;
+                mItemChecked.setVisibility(View.VISIBLE);
+                mDeleteItem.setVisible(true);
+                mAdapter.notifyDataSetChanged();
+                return false;
+            }else{
+                return false;
+            }
+        }
+
+        public SpendingsItemGroupDividerViewHolder(View view){
+            super(view);
+
+            view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
+
+            mItemName = (TextView) view.findViewById(R.id.spendings_item_name);
+            mItemPrice = (TextView) view.findViewById(R.id.spendings_item_amount);
+            mItemCategory = (TextView) view.findViewById(R.id.spendings_item_category);
+            mItemDate = (TextView) view.findViewById(R.id.spendings_item_date);
+            mItemChecked = (CheckBox) view.findViewById(R.id.spendings_delete_id);
+            mGroupTitle = (TextView) view.findViewById(R.id.group_title_id);
+
+            mItemChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        addItemForDeletion(mSpendingsItem.Id);
+                    }else{
+                        removeItemForDeletion(mSpendingsItem.Id);
+                    }
+                }
+            });
+        }
+
+        public void setupModel(SpendingsItem item, int viewType){
+            mSpendingsItem = item;
+            mItemName.setText(item.Name);
+            mItemPrice.setText(item.Amount + " KM");
+            mItemCategory.setText(item.Category.Name);
+            mItemDate.setText(item.getDate().toString("dd/MM/yyyy"));
+            mItemChecked.setChecked(false);
+            mGroupTitle.setText(getGroupName(viewType));
+
+            if(mShowSpendingCheckbox){
+                mItemChecked.setVisibility(View.VISIBLE);
+            }else{
+                mItemChecked.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        private String getGroupName(int viewType){
+            switch (viewType){
+                case 0: return "Today";
+                case 1: return "Yesterday";
+                case 2: return "Older";
+                default: return "";
+            }
+        }
+    }
+
+    public class SpendingsItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         private List<SpendingsItem> mItems = null;
         private List<SpendingsItem> mGroupItems = null;
@@ -202,20 +288,31 @@ public class SpendingsListFragment extends Fragment {
         }
 
         @Override
-        public SpendingsItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-            View view = LayoutInflater.from(getActivity())
-                    .inflate(R.layout.spendings_item, parent, false);
-
-            return new SpendingsItemViewHolder(view);
+            if(viewType == -1){
+                View view = LayoutInflater.from(getActivity())
+                        .inflate(R.layout.spendings_item, parent, false);
+                return new SpendingsItemViewHolder(view);
+            }else {
+                View view = LayoutInflater.from(getActivity())
+                        .inflate(R.layout.spending_item_group_first, parent, false);
+                return new SpendingsItemGroupDividerViewHolder(view);
+            }
         }
 
         @Override
-        public void onBindViewHolder(SpendingsItemViewHolder holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             SpendingsItem item = mItems.get(position);
-            holder.setupModel(item);
+            int viewType = getItemViewType(position);
 
-            Log.d("INDEX", item.Name + " = "+getItemViewType(position));
+            if(viewType == -1){
+                SpendingsItemViewHolder viewHolder = (SpendingsItemViewHolder)holder;
+                viewHolder.setupModel(item);
+            }else{
+                SpendingsItemGroupDividerViewHolder viewHolder = (SpendingsItemGroupDividerViewHolder) holder;
+                viewHolder.setupModel(item, viewType);
+            }
         }
     }
 
@@ -250,14 +347,7 @@ public class SpendingsListFragment extends Fragment {
         DateTime begin = new DateTime().withTime(0,0,0,0);
         DateTime end = new DateTime().withTime(23,59,59,59);
 
-//        // cus we have no today items -> just for testing
-//        begin = begin.minusDays(1);
-//        end = end.minusDays(1);
-
         for(int i = 0; i < 3; i++){
-            // cus we have no today items -> just for testing
-            begin = begin.minusDays(1);
-            end = end.minusDays(1);
 
             List<SpendingsItem> result = mRealmInstance.where(SpendingsItem.class)
                     .between("Date", begin.toDate(), end.toDate())
@@ -266,31 +356,10 @@ public class SpendingsListFragment extends Fragment {
             if(result.size() > 0){
                 startGroupItems.add(result.get(0));
             }
-        }
 
-//        List<SpendingsItem> firstToday = mRealmInstance.where(SpendingsItem.class)
-//                .between("Date", begin.toDate(), end.toDate())
-//                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
-//
-//        begin = begin.minusDays(1);
-//        end = end.minusDays(1);
-//
-//        List<SpendingsItem> firstYesterday = mRealmInstance.where(SpendingsItem.class)
-//                .between("Date", begin.toDate(), end.toDate())
-//                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
-//
-//        begin = begin.minusDays(1);
-//        end = end.minusDays(1);
-//
-//        List<SpendingsItem> firstOlder = mRealmInstance.where(SpendingsItem.class)
-//                .between("Date", begin.toDate(), end.toDate())
-//                .findAllSorted(new String[]{ "Date", "Amount" }, new Sort[]{ Sort.DESCENDING, Sort.DESCENDING });
-//
-//        if(firstToday.size() > 0 && firstYesterday.size() > 0 && firstOlder.size() > 0){
-//            startGroupItems.add(firstToday.get(0));
-//            startGroupItems.add(firstYesterday.get(0));
-//            startGroupItems.add(firstOlder.get(0));
-//        }
+            begin = begin.minusDays(1);
+            end = end.minusDays(1);
+        }
 
         return startGroupItems;
     }
