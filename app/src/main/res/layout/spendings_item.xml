@@ -40,6 +40,7 @@
         android:layout_below="@id/spendings_item_date"
         android:layout_alignParentRight="true"
         android:layout_marginRight="35dp"
+        android:visibility="gone"
         android:layout_marginTop="5dp"/>
 
     <CheckBox

@@ -8,19 +8,22 @@
     android:layout_marginTop="20dp">
 
     <TextView
+        android:id="@+id/group_title_id"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        />
+
+    <TextView
         android:id="@+id/spendings_item_name"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:textSize="20sp"
-        android:layout_centerVertical="true"/>
-
-    <TextView
-        android:id="@+id/group_title_id"
-        android:layout_width="200dp"
-        android:layout_marginLeft="10dp"
-        android:layout_height="wrap_content"/>
+        android:layout_below="@id/group_title_id"/>
 
     <TextView
         android:layout_width="200dp"
@@ -55,6 +58,7 @@
         android:layout_below="@id/spendings_item_date"
         android:layout_alignParentRight="true"
         android:layout_marginRight="35dp"
+        android:visibility="gone"
         android:layout_marginTop="5dp"/>
 
     <CheckBox

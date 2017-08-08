@@ -81,7 +81,7 @@ public class GoalItemDialog extends DialogFragment {
 
     public void addGoal(){
 
-        final Date monthBegin = new DateTime().withDayOfMonth(1).toDate();
+        final Date monthBegin = new DateTime().withDayOfMonth(1).withTime(0,0,0,0).toDate();
         final Date monthEnd = new DateTime().plusMonths(1).minusDays(1).toDate();
 
         realm.executeTransaction(new Realm.Transaction() {
