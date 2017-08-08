@@ -110,11 +110,13 @@ public class OverviewFragment extends Fragment {
     }
 
     private void setTotalForMonth(){
-        mTotal.setText(getString(R.string.month_total, mOverview.getTargetMonthTotal()+""));
+        String targetMonthTotalRounded = String.format("%.2f", mOverview.getTargetMonthTotal());
+        mTotal.setText(getString(R.string.month_total, targetMonthTotalRounded));
     }
 
     private void setTotalToday(){
-        mTotalToday.setText(getString(R.string.today_total, mOverview.getDailyTotal()+""));
+        String totalTodayRounded = String.format("%.2f", mOverview.getDailyTotal());
+        mTotalToday.setText(getString(R.string.today_total, totalTodayRounded));
     }
 
     public void setTitle(){
@@ -142,8 +144,10 @@ public class OverviewFragment extends Fragment {
             mCanSpendToday.setText(getString(R.string.set_goal_warning));
         }else {
             String canSpendTodayRounded = String.format("%.2f", mOverview.getLeftToSpendToday());
+            String canSpendThisMonthRounded = String.format("%.2f", mOverview.getLeftToSpendThisMonth());
+
             mCanSpendToday.setText(getString(R.string.left_to_spend_today, canSpendTodayRounded));
-            mCanSpendMonth.setText(getString(R.string.left_to_spend_month, mOverview.getLeftToSpendThisMonth() + ""));
+            mCanSpendMonth.setText(getString(R.string.left_to_spend_month, canSpendThisMonthRounded));
         }
     }
 

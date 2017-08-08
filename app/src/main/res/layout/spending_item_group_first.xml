@@ -4,7 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:elevation="10dp"
-    android:background="@drawable/bottom_border">
+    android:background="@drawable/bottom_border"
+    android:layout_marginTop="20dp">
+
+    <TextView
+        android:id="@+id/group_title_id"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        />
 
     <TextView
         android:id="@+id/spendings_item_name"
@@ -13,7 +23,15 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:textSize="20sp"
-        android:layout_centerVertical="true"/>
+        android:layout_below="@id/group_title_id"/>
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:textSize="20sp"
+        android:layout_above="@id/spendings_item_name"/>
 
     <TextView
         android:id="@+id/spendings_item_amount"
@@ -50,5 +68,5 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/spendings_item_amount"
         android:visibility="invisible"/>
-    
+
 </RelativeLayout>
