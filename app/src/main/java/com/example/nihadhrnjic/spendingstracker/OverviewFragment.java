@@ -46,6 +46,7 @@ public class OverviewFragment extends Fragment {
     private TextView mCanSpendMonth;
     private TextView mCanSpendToday;
     private TextView mTotalMoney;
+    private TextView mDaysLeftInMonth;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -157,6 +158,7 @@ public class OverviewFragment extends Fragment {
         setTotalForMonth();
         setCanSpend();
         setTotalMoney();
+        mDaysLeftInMonth.setText(getString(R.string.days_left, mOverview.daysLeftInMonth() + ""));
     }
 
     private void bindUIWidgets(View view){
@@ -166,6 +168,7 @@ public class OverviewFragment extends Fragment {
         mCanSpendMonth = (TextView) view.findViewById(R.id.can_spend_month_id);
         mCanSpendToday = (TextView) view.findViewById(R.id.can_spend_today_id);
         mTotalMoney = (TextView) view.findViewById(R.id.total_money_id);
+        mDaysLeftInMonth = (TextView) view.findViewById(R.id.days_left_in_month_id);
     }
 
     private void changeOverviewMonth(){

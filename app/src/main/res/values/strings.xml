@@ -39,6 +39,7 @@
     <string name="total_money"> You currently have: %1s KM </string>
     <string name="overview_general_heading"> General Overview </string>
     <string name="overview_today_heading"> Overview for today </string>
+    <string name="days_left"> Days left: %1s </string>
 
     <!-- Strings related to Settings -->
 

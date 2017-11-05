@@ -59,6 +59,12 @@ public class Overview {
         return LocalPreferences.getFloat(context, context.getString(R.string.pref_money));
     }
 
+    public int daysLeftInMonth(){
+        DateTime today = new DateTime();
+        int daysLeftThisMonth = today.dayOfMonth().getMaximumValue() - today.dayOfMonth().get();
+        return daysLeftThisMonth + 1;
+    }
+
     private double calculateMonthlyTotal(){
         DateTime monthBegin = new DateTime().withMonthOfYear(mTargetMonth).withDayOfMonth(1)
                 .withTime(0,0,0,0);
@@ -102,6 +108,12 @@ public class Overview {
         int daysLeftThisMonth = today.dayOfMonth().getMaximumValue() - today.dayOfMonth().get();
 
         double dailyAverage = getLeftToSpendThisMonth() / (daysLeftThisMonth + 1);
-        return dailyAverage - getDailyTotal();
+        double result = dailyAverage - getDailyTotal();
+
+        if(result < 0){
+            return dailyAverage;
+        }else{
+            return result;
+        }
     }
 }
