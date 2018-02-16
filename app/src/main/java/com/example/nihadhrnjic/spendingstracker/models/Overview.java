@@ -20,17 +20,24 @@ public class Overview {
 
     private final Realm mRealm = Realm.getDefaultInstance();
     private int mTargetMonth;
+    private int mtargetYeary;
 
     public Overview(){
         mTargetMonth = DateTime.now().getMonthOfYear();
+        mtargetYeary = DateTime.now().getYear();
     }
 
     public void setMonth(int month){
         mTargetMonth = month;
     }
+    public void setYear(int year){mtargetYeary = year;}
 
     public String getCurrentMonthName(){
-        return new DateTime(2017, mTargetMonth, 1, 0, 0).toString("MMMM");
+        return new DateTime(mtargetYeary, mTargetMonth, 1, 0, 0).toString("MMMM");
+    }
+
+    public String getLabel(){
+        return new DateTime(mtargetYeary, mTargetMonth, 1, 0, 0).toString("MMM,yyyy");
     }
 
     public double getTargetMonthTotal(){
@@ -66,7 +73,7 @@ public class Overview {
     }
 
     private double calculateMonthlyTotal(){
-        DateTime monthBegin = new DateTime().withMonthOfYear(mTargetMonth).withDayOfMonth(1)
+        DateTime monthBegin = new DateTime().withYear(mtargetYeary).withMonthOfYear(mTargetMonth).withDayOfMonth(1)
                 .withTime(0,0,0,0);
 
         DateTime monthEnd = monthBegin.plusMonths(1).minusDays(1);
@@ -79,7 +86,7 @@ public class Overview {
     }
 
     private double calculateMonthlyGoal(){
-        DateTime monthBegin = new DateTime().withMonthOfYear(mTargetMonth).withDayOfMonth(1)
+        DateTime monthBegin = new DateTime().withYear(mtargetYeary).withMonthOfYear(mTargetMonth).withDayOfMonth(1)
                 .withTime(0,0,0,0);
 
         DateTime monthEnd = monthBegin.plusMonths(1).minusDays(1);

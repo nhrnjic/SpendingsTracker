@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.nihadhrnjic.spendingstracker.models.MonthExtra;
 import com.example.nihadhrnjic.spendingstracker.models.Overview;
 import com.example.nihadhrnjic.spendingstracker.models.SpendingsGoal;
 import com.example.nihadhrnjic.spendingstracker.models.SpendingsItem;
@@ -97,12 +98,11 @@ public class OverviewFragment extends Fragment {
         }
 
         if(requestCode == CHOOSE_MONTH_CODE){
-            int newTargetMonth = data.getIntExtra(MonthPicker.MONTH_INDEX_EXTRA, mTargetMonth);
-            if(newTargetMonth != mTargetMonth){
-                mOverview.setMonth(newTargetMonth);
-                mTargetMonth = newTargetMonth;
-                updateUI();
-            }
+            MonthExtra monthExtra = (MonthExtra) data.getSerializableExtra(MonthPicker.MONTH_INDEX_EXTRA);
+            mOverview.setMonth(monthExtra.getMonth());
+            mOverview.setYear(monthExtra.getYear());
+            updateUI();
+            setTitle();
         }
 
         if(requestCode == UPDATE_MONEY_CODE){
@@ -121,7 +121,7 @@ public class OverviewFragment extends Fragment {
     }
 
     public void setTitle(){
-        getActivity().setTitle(getString(R.string.overview_title, mOverview.getCurrentMonthName()));
+        getActivity().setTitle(getString(R.string.overview_title, mOverview.getLabel()));
     }
 
     private void setSpendingGoal(){
