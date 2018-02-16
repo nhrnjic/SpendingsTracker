@@ -147,7 +147,6 @@ public class SpendingsListFragment extends Fragment {
 
             mItemName = (TextView) view.findViewById(R.id.spendings_item_name);
             mItemPrice = (TextView) view.findViewById(R.id.spendings_item_amount);
-            mItemCategory = (TextView) view.findViewById(R.id.spendings_item_category);
             mItemDate = (TextView) view.findViewById(R.id.spendings_item_date);
             mItemChecked = (CheckBox) view.findViewById(R.id.spendings_delete_id);
 
@@ -167,7 +166,6 @@ public class SpendingsListFragment extends Fragment {
             mSpendingsItem = item;
             mItemName.setText(item.Name);
             mItemPrice.setText(item.Amount + " KM");
-            mItemCategory.setText(item.Category.Name);
             mItemDate.setText(item.getDate().toString("dd/MM/yyyy"));
             mItemChecked.setChecked(false);
 
@@ -222,7 +220,6 @@ public class SpendingsListFragment extends Fragment {
 
             mItemName = (TextView) view.findViewById(R.id.spendings_item_name);
             mItemPrice = (TextView) view.findViewById(R.id.spendings_item_amount);
-            mItemCategory = (TextView) view.findViewById(R.id.spendings_item_category);
             mItemDate = (TextView) view.findViewById(R.id.spendings_item_date);
             mItemChecked = (CheckBox) view.findViewById(R.id.spendings_delete_id);
             mGroupTitle = (TextView) view.findViewById(R.id.group_title_id);
@@ -243,7 +240,6 @@ public class SpendingsListFragment extends Fragment {
             mSpendingsItem = item;
             mItemName.setText(item.Name);
             mItemPrice.setText(item.Amount + " KM");
-            mItemCategory.setText(item.Category.Name);
             mItemDate.setText(item.getDate().toString("dd/MM/yyyy"));
             mItemChecked.setChecked(false);
             mGroupTitle.setText(getGroupName(viewType));
