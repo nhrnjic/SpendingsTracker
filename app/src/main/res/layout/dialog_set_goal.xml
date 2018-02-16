@@ -2,19 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="15dp">
 
     <TextView
-        android:id="@+id/monthly_goal_dialog_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?android:listSeparatorTextViewStyle"/>
+        android:gravity="center"
+        android:text="Monthly goal"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20dp"
+        android:layout_marginBottom="15dp"/>
 
-    <EditText
-        android:id="@+id/goal_edit_text_id"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/goal_edit_text_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:hint="400"/>
+        android:layout_marginBottom="15dp">
+
+        <EditText
+            android:id="@+id/goal_edit_text_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="Spendings goal"
+            android:inputType="numberDecimal"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/save_goal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:text="Save"/>
+
+    <TextView
+        android:id="@+id/cancel_goal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Cancel"
+        android:textSize="20dp"/>
 
 </LinearLayout>

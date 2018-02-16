@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -29,7 +30,8 @@ import io.realm.Realm;
 public class GoalItemDialog extends DialogFragment {
 
     private EditText mGoalAmount;
-    private TextView mLabel;
+    private Button mSaveGoal;
+    private TextView mExit;
     private SpendingsGoal mGoal;
     private final Realm realm = Realm.getDefaultInstance();
 
@@ -61,20 +63,25 @@ public class GoalItemDialog extends DialogFragment {
             }
         });
 
-        mLabel = (TextView) view.findViewById(R.id.monthly_goal_dialog_label);
-        mLabel.setText("Set goal for " + new DateTime().toString("MMMM"));
+        mSaveGoal = (Button) view.findViewById(R.id.save_goal);
+        mSaveGoal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addGoal();
+                dismiss();
+            }
+        });
+
+        mExit = (TextView) view.findViewById(R.id.cancel_goal);
+        mExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Monthly goal")
-                .setView(view)
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        addGoal();
-                    }
-                });
+        builder.setView(view);
 
         return builder.create();
     }
