@@ -13,7 +13,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * Created by nihadhrnjic on 7/21/17.
@@ -25,6 +27,9 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
     private static final String ADD_MONEY_ARGS = "add_money_args";
 
     private EditText mMoneyInput;
+    private TextView mMoneyTitle;
+    private Button mSave;
+    private TextView mCancel;
     private String mMoney = "";
     private boolean mAddMoney;
 
@@ -61,25 +66,37 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
             }
         });
 
+        mMoneyTitle = (TextView) view.findViewById(R.id.money_title);
+
         float moneyTotal = LocalPreferences.getFloat(getActivity(), getString(R.string.pref_money));
-        String formatedMoneyTotal = String.format("%.2f", moneyTotal);
-        String title = "Add Money ("+formatedMoneyTotal+" KM)";
+        String title = "Add to balance";
 
         if(!mAddMoney){
-            title = "Remove Money ("+formatedMoneyTotal+" KM)";
+            title = "Subtract from balance";
         }
 
+        mMoneyTitle.setText(title);
+
+        mCancel = (TextView) view.findViewById(R.id.cancel_money);
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        mSave = (Button) view.findViewById(R.id.save_balance);
+        mSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateMoney();
+                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
+                dismiss();
+            }
+        });
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(title)
-                .setView(view)
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        updateMoney();
-                        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
-                    }
-                })
-                .setNegativeButton("Cancel", null);
+        builder.setView(view);
 
         return builder.create();
     }
