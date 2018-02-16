@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.nihadhrnjic.spendingstracker.models.Category;
 import com.example.nihadhrnjic.spendingstracker.models.SpendingsItem;
@@ -42,9 +43,8 @@ public class AddSpendingFragment extends Fragment {
     private EditText mItemDescription;
     private EditText mItemPrice;
     private Button mItemDate;
-    private Button mItemCategory;
-    private Button mNewCategory;
     private Button mAddSpendings;
+    private TextView mCancel;
 
     private SpendingsItem mSpendingsItem;
 
@@ -129,25 +129,6 @@ public class AddSpendingFragment extends Fragment {
             }
         });
 
-        mItemCategory = (Button) view.findViewById(R.id.item_category_id);
-        mItemCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectCategoryFragment categoryFragment = new SelectCategoryFragment();
-                categoryFragment.setTargetFragment(AddSpendingFragment.this, CHOOSE_CATEGORY_CODE);
-                categoryFragment.show(getFragmentManager(), DIALOG_CHOOSE_CATEGORY);
-            }
-        });
-
-        mNewCategory = (Button) view.findViewById(R.id.item_category_new_id);
-        mNewCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NewCategoryFragment newCategoryFragment = new NewCategoryFragment();
-                newCategoryFragment.show(getFragmentManager(), DIALOG_NEW_CATEGORY);
-            }
-        });
-
         mAddSpendings = (Button) view.findViewById(R.id.add_spendings_id);
         mAddSpendings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +146,14 @@ public class AddSpendingFragment extends Fragment {
             }
         });
 
+        mCancel = (TextView) view.findViewById(R.id.add_spending_cancel);
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         return view;
     }
 
@@ -173,12 +162,6 @@ public class AddSpendingFragment extends Fragment {
 
         if(resultCode != Activity.RESULT_OK){
             return;
-        }
-
-        if(requestCode == CHOOSE_CATEGORY_CODE){
-            String name = data.getStringExtra(SelectCategoryFragment.CHOOSE_CATEGORY_EXTRA);
-            mItemCategory.setText(name);
-            mSpendingsItem.Category = getCategoryByName(name);
         }
 
         if(requestCode == CHOOSE_DATE_CODE){
