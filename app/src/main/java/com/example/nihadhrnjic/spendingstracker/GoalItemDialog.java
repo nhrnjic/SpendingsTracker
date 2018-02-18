@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class GoalItemDialog extends DialogFragment {
     private EditText mGoalAmount;
     private Button mSaveGoal;
     private TextView mExit;
+    private TextInputLayout mGoalLabel;
     private SpendingsGoal mGoal;
     private final Realm realm = Realm.getDefaultInstance();
 
@@ -63,10 +65,18 @@ public class GoalItemDialog extends DialogFragment {
             }
         });
 
+        mGoalLabel = (TextInputLayout) view.findViewById(R.id.goal_layout);
+
         mSaveGoal = (Button) view.findViewById(R.id.save_goal);
         mSaveGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(mGoal.Amount <= 0){
+                    mGoalLabel.setError("This field is required.");
+                    return;
+                }
+
                 addGoal();
                 dismiss();
             }

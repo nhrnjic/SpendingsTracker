@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
     private TextView mCancel;
     private String mMoney = "";
     private boolean mAddMoney;
+    private TextInputLayout mMoneyLabel;
 
     public static MoneyDialog newInstance(boolean addMoney){
         MoneyDialog dialog = new MoneyDialog();
@@ -67,6 +69,7 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
         });
 
         mMoneyTitle = (TextView) view.findViewById(R.id.money_title);
+        mMoneyLabel = (TextInputLayout) view.findViewById(R.id.money_label);
 
         float moneyTotal = LocalPreferences.getFloat(getActivity(), getString(R.string.pref_money));
         String title = "Add to balance";
@@ -89,6 +92,12 @@ public class MoneyDialog extends android.support.v4.app.DialogFragment {
         mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(mMoney.isEmpty()){
+                    mMoneyLabel.setError("This field is required.");
+                    return;
+                }
+
                 updateMoney();
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, null);
                 dismiss();
