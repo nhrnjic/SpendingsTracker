@@ -112,12 +112,12 @@ public class OverviewFragment extends Fragment {
 
     private void setTotalForMonth(){
         String targetMonthTotalRounded = String.format("%.2f", mOverview.getTargetMonthTotal());
-        mTotal.setText(getString(R.string.month_total, targetMonthTotalRounded));
+        mTotal.setText(targetMonthTotalRounded);
     }
 
     private void setTotalToday(){
         String totalTodayRounded = String.format("%.2f", mOverview.getDailyTotal());
-        mTotalToday.setText(getString(R.string.today_total, totalTodayRounded));
+        mTotalToday.setText(totalTodayRounded);
     }
 
     public void setTitle(){
@@ -135,7 +135,7 @@ public class OverviewFragment extends Fragment {
 
     private void setTotalMoney(){
         String totalMoneyRounded = String.format("%.2f", mOverview.getTotalMoney(getActivity()));
-        mTotalMoney.setText(getString(R.string.total_money, totalMoneyRounded));
+        mTotalMoney.setText(totalMoneyRounded + " KM");
     }
 
     private void setCanSpend(){
@@ -147,28 +147,28 @@ public class OverviewFragment extends Fragment {
             String canSpendTodayRounded = String.format("%.2f", mOverview.getLeftToSpendToday());
             String canSpendThisMonthRounded = String.format("%.2f", mOverview.getLeftToSpendThisMonth());
 
-            mCanSpendToday.setText(getString(R.string.left_to_spend_today, canSpendTodayRounded));
-            mCanSpendMonth.setText(getString(R.string.left_to_spend_month, canSpendThisMonthRounded));
+            mCanSpendToday.setText(canSpendTodayRounded);
+            mCanSpendMonth.setText(canSpendThisMonthRounded);
         }
     }
 
     public void updateUI(){
         setTotalToday();
-        setSpendingGoal();
+        //setSpendingGoal();
         setTotalForMonth();
         setCanSpend();
         setTotalMoney();
-        mDaysLeftInMonth.setText(getString(R.string.days_left, mOverview.daysLeftInMonth() + ""));
+        //mDaysLeftInMonth.setText(getString(R.string.days_left, mOverview.daysLeftInMonth() + ""));
     }
 
     private void bindUIWidgets(View view){
         mTotal = (TextView) view.findViewById(R.id.total_amount_id);
         mTotalToday = (TextView) view.findViewById(R.id.total_today_id);
-        mSpendingGoal = (TextView) view.findViewById(R.id.spending_goal_id);
+        //mSpendingGoal = (TextView) view.findViewById(R.id.spending_goal_id);
         mCanSpendMonth = (TextView) view.findViewById(R.id.can_spend_month_id);
         mCanSpendToday = (TextView) view.findViewById(R.id.can_spend_today_id);
         mTotalMoney = (TextView) view.findViewById(R.id.total_money_id);
-        mDaysLeftInMonth = (TextView) view.findViewById(R.id.days_left_in_month_id);
+        //mDaysLeftInMonth = (TextView) view.findViewById(R.id.days_left_in_month_id);
     }
 
     private void changeOverviewMonth(){

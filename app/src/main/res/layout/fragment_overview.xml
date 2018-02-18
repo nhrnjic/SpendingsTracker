@@ -25,68 +25,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="10dp">
+            android:padding="15dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/overview_general_heading"
-                android:textSize="24sp"
-                android:paddingTop="15dp"
-                android:gravity="center"/>
+                android:text="Balance"
+                android:textStyle="bold"
+                />
 
             <TextView
                 android:id="@+id/total_money_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="16sp"
-                android:gravity="center_horizontal"/>
-
-            <TextView
-                android:id="@+id/total_amount_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hello World"
-                android:layout_marginTop="20dp"
-                android:textSize="16sp"
-                android:gravity="center_horizontal"/>
-
-            <TextView
-                android:id="@+id/spending_goal_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="16sp"
-                android:gravity="center_horizontal"/>
-
-            <TextView
-                android:id="@+id/can_spend_month_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="16sp"
-                android:gravity="center_horizontal"/>
-
-            <TextView
-                android:id="@+id/days_left_in_month_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:paddingBottom="20dp"
-                android:textSize="16sp"
-                android:gravity="center_horizontal"/>
-
+                android:text="2000,00 KM"
+                android:gravity="center"
+                android:textSize="25dp"
+                android:textColor="@color/colorPrimary"
+                />
 
         </LinearLayout>
-
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         app:cardCornerRadius="4dp"
@@ -95,36 +60,158 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="15dp">
 
             <TextView
+                android:id="@+id/current_month_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/overview_today_heading"
-                android:textSize="24sp"
-                android:paddingTop="15dp"
-                android:gravity="center"/>
+                android:text="February"
+                android:textStyle="bold"
+                />
 
-            <TextView
-                android:id="@+id/total_today_id"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="16sp"
-                android:gravity="center_horizontal"/>
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/can_spend_today_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textSize="16sp"
-                android:paddingBottom="20dp"
-                android:gravity="center_horizontal"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="5dp"
+                    android:padding="10dp"
+                    android:background="@color/colorPrimary">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Spendings"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:id="@+id/total_amount_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="240 KM"
+                        android:textColor="#ffffff"
+                        android:textSize="15dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="5dp"
+                    android:padding="10dp"
+                    android:background="@color/colorAccent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Left to spend"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:id="@+id/can_spend_month_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="240 KM"
+                        android:textColor="#ffffff"
+                        android:textSize="15dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
-
     </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        app:cardCornerRadius="4dp"
+        android:elevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Today"
+                android:textStyle="bold"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="5dp"
+                    android:padding="10dp"
+                    android:background="@color/colorPrimary">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Spendings"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:id="@+id/total_today_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="240 KM"
+                        android:textColor="#ffffff"
+                        android:textSize="15dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="5dp"
+                    android:padding="10dp"
+                    android:background="@color/colorAccent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Left to spend"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:id="@+id/can_spend_today_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="240 KM"
+                        android:textColor="#ffffff"
+                        android:textSize="15dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
 
 </LinearLayout>
 
