@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -45,6 +46,9 @@ public class AddSpendingFragment extends Fragment {
     private Button mItemDate;
     private Button mAddSpendings;
     private TextView mCancel;
+    private TextInputLayout mSpendingsNameLabel;
+    private TextInputLayout mSpendingsDescLabel;
+    private TextInputLayout mSpendingsAmountLabel;
 
     private SpendingsItem mSpendingsItem;
 
@@ -133,16 +137,35 @@ public class AddSpendingFragment extends Fragment {
         mAddSpendings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRealmInstance.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        SpendingsItem item = realm.copyToRealm(mSpendingsItem);
-                        float currentAmount = LocalPreferences.getFloat(getActivity(), "money_amount_key");
-                        LocalPreferences.saveFloat(getActivity(), "money_amount_key", currentAmount - (float) mSpendingsItem.Amount);
-                    }
-                });
 
-                getActivity().finish();
+                boolean canAdd = true;
+
+                if(mSpendingsItem.Name.isEmpty()){
+                    mSpendingsNameLabel.setError("This field is required.");
+                    canAdd = false;
+                }
+
+                if(mSpendingsItem.Description.isEmpty()){
+                    mSpendingsDescLabel.setError("This field is required.");
+                    canAdd = false;
+                }
+
+                if(mSpendingsItem.Amount <= 0){
+                    mSpendingsAmountLabel.setError("This field is required.");
+                }
+
+                if(canAdd){
+                    mRealmInstance.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            SpendingsItem item = realm.copyToRealm(mSpendingsItem);
+                            float currentAmount = LocalPreferences.getFloat(getActivity(), "money_amount_key");
+                            LocalPreferences.saveFloat(getActivity(), "money_amount_key", currentAmount - (float) mSpendingsItem.Amount);
+                        }
+                    });
+
+                    getActivity().finish();
+                }
             }
         });
 
@@ -153,6 +176,10 @@ public class AddSpendingFragment extends Fragment {
                 getActivity().onBackPressed();
             }
         });
+
+        mSpendingsNameLabel = (TextInputLayout) view.findViewById(R.id.item_name_layout);
+        mSpendingsDescLabel = (TextInputLayout) view.findViewById(R.id.item_desc_layout);
+        mSpendingsAmountLabel = (TextInputLayout) view.findViewById(R.id.item_price_layout);
 
         return view;
     }
