@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.nihadhrnjic.spendingstracker.SplashActivity">
+
+    <TextView
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="SpendingsTracker"
+        android:textSize="30dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_below="@id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Simple way of tracking your money"
+        android:textSize="16dp"
+        android:gravity="center"/>
+
+
+</RelativeLayout>
