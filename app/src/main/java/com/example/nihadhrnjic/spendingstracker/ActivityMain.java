@@ -15,6 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.example.nihadhrnjic.spendingstracker.models.Overview;
 
 public class ActivityMain extends AppCompatActivity{
 
@@ -90,6 +93,12 @@ public class ActivityMain extends AppCompatActivity{
 
         mAddButton = (FloatingActionButton) findViewById(R.id.fab);
         handleFabButton(mViewPager.getCurrentItem());
+
+        String warning = warningText();
+
+        if(warning != null){
+            Toast.makeText(this, warning, Toast.LENGTH_LONG).show();
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -142,6 +151,22 @@ public class ActivityMain extends AppCompatActivity{
                         goalItemDialog.show(getFragmentManager(), GOAL_DIALOG);
                     }
                 });
+        }
+    }
+
+    private String warningText(){
+        Overview overview = new Overview();
+
+        double percentage =  (overview.getTargetMonthTotal() / overview.getTargetMonthGoal()) * 100;
+
+        if(overview.getTargetMonthTotal() > overview.getTargetMonthGoal()){
+            return "Be careful! You've exceeded your monthly goal.";
+        }else if(overview.getTargetMonthTotal() == overview.getTargetMonthGoal()){
+            return "Be careful! You've reached your monthly goal.";
+        }else if(percentage > 85 && percentage < 100){
+            return "Be careful! You are getting closer to your monthly goal.";
+        }else{
+            return null;
         }
     }
 }

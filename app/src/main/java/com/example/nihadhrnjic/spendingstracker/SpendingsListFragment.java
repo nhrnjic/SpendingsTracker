@@ -17,8 +17,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nihadhrnjic.spendingstracker.models.Category;
+import com.example.nihadhrnjic.spendingstracker.models.Overview;
 import com.example.nihadhrnjic.spendingstracker.models.SpendingsGoal;
 import com.example.nihadhrnjic.spendingstracker.models.SpendingsItem;
 
@@ -313,6 +315,12 @@ public class SpendingsListFragment extends Fragment {
     }
 
     public void updateList(){
+        String warning = warningText();
+
+        if(warning != null){
+            Toast.makeText(getActivity(), warning, Toast.LENGTH_LONG).show();
+        }
+
         mAdapter.notifyDataSetChanged();
     }
 
@@ -358,5 +366,21 @@ public class SpendingsListFragment extends Fragment {
         }
 
         return startGroupItems;
+    }
+
+    private String warningText(){
+        Overview overview = new Overview();
+
+        double percentage =  (overview.getTargetMonthTotal() / overview.getTargetMonthGoal()) * 100;
+
+        if(overview.getTargetMonthTotal() > overview.getTargetMonthGoal()){
+            return "Be careful! You've exceeded your monthly goal.";
+        }else if(overview.getTargetMonthTotal() == overview.getTargetMonthGoal()){
+            return "Be careful! You've reached your monthly goal.";
+        }else if(percentage > 85 && percentage < 100){
+            return "Be careful! You are getting closer to your monthly goal.";
+        }else{
+            return null;
+        }
     }
 }
